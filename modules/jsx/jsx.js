@@ -141,7 +141,7 @@ var tpls = require('tpls');
     };
 
     var parsePrivitive = function(value, domParent, depth) {
-      if (value == null || typeof value === 'string' && !value) {
+      if (value == null || (typeof value === 'string' && !value)) {
         // ignore void values and empty strings
         return;
       }
@@ -160,7 +160,7 @@ var tpls = require('tpls');
         }
 
         value.forEach(function(item) {
-          parsePrivitive(item, domParent, depth + 1);
+          doParse(item, domParent, depth + 1);
         });
       } else /*if (typeof value === 'string' ||
           typeof value === 'number' ||
@@ -174,13 +174,13 @@ var tpls = require('tpls');
       }
     };
 
-    var doParse = function(node, domParent) {
+    var doParse = function(node, domParent, depth) {
       if (node instanceof jsx.Component) {
-        parseComponent(node, domParent);
+        parseComponent(node, domParent, depth);
       } else if (node instanceof jsx.Element) {
-        parseElement(node, domParent);
+        parseElement(node, domParent, depth);
       } else {
-        parsePrivitive(node, domParent);
+        parsePrivitive(node, domParent, depth);
       }
     };
 
